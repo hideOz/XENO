@@ -16,18 +16,6 @@ def player_turn(deck, player_hand, player_field, dealer_hand, dealer_field)     
   end
 end
 
-def dealer_turn(deck, dealer_hand, player_field, dealer_field)           #dealerのターン
-  puts "
-  
-        dealerのターンです
-        
-        
-        "
-  draw_card_dealer(deck, dealer_hand)                                    #dealerのドロー
-  dealer_card_play(deck, dealer_hand, dealer_field)                      #dealerの手札からランダムに1枚場に出す
-end
-
-
 def effect_7_player_judge(deck, player_hand, player_field, dealer_field)
   if player_field[0] == 10
     if player_field[2].nil?     #１ターン目で10を捨てられてもplayer_field[2]は存在しないため
@@ -55,13 +43,6 @@ def draw_card_player(deck, player_hand)                                  #player
   puts "あなたは#{player_hand[0]}を手札に加えました"
 end
 
-def draw_card_dealer(deck, dealer_hand)                                  #dealerのドロー
-  sift_card = deck.shift(1)
-  dealer_hand.unshift(sift_card[0])
-  puts "dealerはドローしました"
-  puts "DECKの残り枚数は、#{deck.length}枚です"
-end
-
 def player_card_play(deck, player_hand, player_field, dealer_field)      #playerの手札から1枚場に出す
   while player_hand.length > 1
     puts "-----------------------------------"
@@ -82,18 +63,6 @@ def player_card_play(deck, player_hand, player_field, dealer_field)      #player
       else
         puts "＊＊＊＊＊無効な値です＊＊＊＊＊"
       end
-  end
-end
-
-
-
-def dealer_card_play(deck, dealer_hand, dealer_field)                   #dealerの手札から1枚場に出す
-  random = rand(2)
-  if random == 0
-    choice = dealer_hand.shift(1)
-    dealer_field.unshift(choice[0])
-  elsif random == 1
-    dealer_field.unshift(dealer_hand.pop)
   end
 end
 
@@ -119,7 +88,7 @@ end
 
 
 
-def effect_1_player(deck, player_field, dealer_hand, dealer_field)           #playerのカードのそれぞれの効果解決
+def effect_1_player(deck, player_field, dealer_hand, dealer_field)           #playerのカード[1]の効果解決
   if player_field.count(1) + dealer_field.count(1) == 2
     draw_card_dealer(deck, dealer_hand)
     while dealer_hand.length > 1
@@ -138,7 +107,7 @@ def effect_1_player(deck, player_field, dealer_hand, dealer_field)           #pl
   end
 end
 
-def effect_2_player(dealer_hand, dealer_field)
+def effect_2_player(dealer_hand, dealer_field)                            #playerのカード[2]の効果解決
   while true
     puts "捨てさせたいカードを入力して下さい"
     input = gets.to_i
@@ -153,7 +122,7 @@ def effect_2_player(dealer_hand, dealer_field)
   end
 end
 
-def effect_5_player(deck, dealer_hand, dealer_field)
+def effect_5_player(deck, dealer_hand, dealer_field)                    #playerのカード[5]の効果解決
   draw_card_dealer(deck, dealer_hand)
   while dealer_hand.length > 1
     puts "捨てさせたいカードを選択して下さい"
@@ -173,7 +142,7 @@ def effect_5_player(deck, dealer_hand, dealer_field)
   end
 end
 
-def effect_6_player(player_hand, dealer_hand)
+def effect_6_player(player_hand, dealer_hand)                           #playerのカード[6]の効果解決
   puts "相手のカードは#{dealer_hand[0]}です"
   puts "あなたのカードは#{player_hand[0]}です"
   if player_hand[0] > dealer_hand[0]
@@ -185,7 +154,7 @@ def effect_6_player(player_hand, dealer_hand)
   end
 end
 
-def effect_7_player(deck, player_hand, player_field, dealer_field)
+def effect_7_player(deck, player_hand, player_field, dealer_field)                #playerのカード[7]の効果解決
   while true
     puts "デッキの上から3枚を確認します"
     puts "        #{deck[0]},  #{deck[1]},  #{deck[2]}"
@@ -217,14 +186,14 @@ def effect_7_player(deck, player_hand, player_field, dealer_field)
   end
 end
 
-def effect_8_player(player_hand, dealer_hand)
+def effect_8_player(player_hand, dealer_hand)                                     #playerのカード[8]の効果解決
   player_hand << dealer_hand.delete_at(0)
   dealer_hand << player_hand.delete_at(0)
   puts "お互いの手札を交換しました"
   puts "相手に[#{dealer_hand[0]}]を渡して、相手から[#{player_hand[0]}]を受け取りました"
 end
 
-def effect_9_player(deck, dealer_hand, dealer_field)
+def effect_9_player(deck, dealer_hand, dealer_field)                              #playerのカード[9]の効果解決
   draw_card_dealer(deck, dealer_hand)
   while dealer_hand.length > 1
     puts "相手の手札：#{dealer_hand}"
@@ -244,7 +213,7 @@ def effect_9_player(deck, dealer_hand, dealer_field)
   end
 end
 
-def effect_10_player(re_card, player_hand, player_field)
+def effect_10_player(re_card, player_hand, player_field)                        #playerのカード[10]の効果解決
   if player_hand[0] == 10
     puts "10が選ばれたので、手札を全て捨てます"
     player_field.unshift(player_hand.delete_at(1))
@@ -263,6 +232,48 @@ def effect_10_player(re_card, player_hand, player_field)
     puts "転生カード[#{player_hand[0]}]を手札に加えました"
   end
 end
+
+
+
+
+
+
+
+
+def dealer_turn(deck, dealer_hand, player_field, dealer_field)           #dealerのターン
+  puts "
+  
+        dealerのターンです
+        
+        
+        "
+  draw_card_dealer(deck, dealer_hand)                                    #dealerのドロー
+  dealer_card_play(deck, dealer_hand, dealer_field)                      #dealerの手札からランダムに1枚場に出す
+end
+
+def draw_card_dealer(deck, dealer_hand)                                  #dealerのドロー
+  sift_card = deck.shift(1)
+  dealer_hand.unshift(sift_card[0])
+  puts "dealerはドローしました"
+  puts "DECKの残り枚数は、#{deck.length}枚です"
+end
+
+def dealer_card_play(deck, dealer_hand, dealer_field)                   #dealerの手札から1枚場に出す
+  random = rand(2)
+  if random == 0
+    choice = dealer_hand.shift(1)
+    dealer_field.unshift(choice[0])
+  elsif random == 1
+    dealer_field.unshift(dealer_hand.pop)
+  end
+end
+
+
+
+
+
+
+
 
 def game_set_win
   puts "あなたの勝ちです"
